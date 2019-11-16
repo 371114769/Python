@@ -41,6 +41,10 @@ class DmzjMobile:
         for e in self.contents.values():
             download(self.season_name, e['chapter'], e['links'])
 
+
 if __name__ == "__main__":
-    comic = DmzjMobile('https://manhua.dmzj.com/lydxcbdzm/')
+    # 把网站赋值到这里
+    url = 'https://manhua.dmzj.com/lydxcbdzm/'
+
+    comic = DmzjMobile(url)
     comic.download()

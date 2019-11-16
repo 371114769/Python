@@ -53,5 +53,8 @@ class DmzjDesktop:
 
 
 if __name__ == "__main__":
-    comic = DmzjDesktop('https://manhua.dmzj.com/lydxcbdzm/')
+    # 把网站赋值到这里
+    url = 'https://manhua.dmzj.com/lydxcbdzm/'
+
+    comic = DmzjDesktop(url)
     comic.download()
