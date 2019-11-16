@@ -1,18 +1,23 @@
 import requests
 import re
 import json
-from download import download
+from util import download, check_input
 
 r = requests.Session()
 
 
-class Dmzj:
+class DmzjMobile:
+    """移动端网页
+    :season: 要下载的漫画主页的网址 or 最后的目录"""
+
     def __init__(self, season: str):
         self.contents = {}
+        season = check_input(season)
         self.get_season_content(season)
         # print(self.contents)
 
     def get_season_content(self, season):
+        print(f"searching for {season}")
         url = f'https://m.dmzj.com/info/{season}.html'
         res = r.get(url)
 
@@ -36,7 +41,6 @@ class Dmzj:
         for e in self.contents.values():
             download(self.season_name, e['chapter'], e['links'])
 
-
 if __name__ == "__main__":
-    p = Dmzj('chengfazhe12')
-    p.download()
+    comic = DmzjMobile('https://manhua.dmzj.com/lydxcbdzm/')
+    comic.download()

@@ -1,6 +1,9 @@
 import requests
-from js2py import EvalJs
-from download import download
+try:
+    from js2py import EvalJs
+except ModuleNotFoundError:
+    print("Requirement not met, please install 'js2py'")
+from util import download, check_input
 import bs4
 import json
 import re
@@ -10,17 +13,20 @@ r = requests.Session()
 r.headers = {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"}
 
 
-class Dmzj:
+class DmzjDesktop:
+    """电脑版网页
+    :season: 要下载的漫画主页的网址 or 最后的目录"""
+
     def __init__(self, season: str):
         self.contents = []
+        season = check_input(season)
         self.get_season_content(season)
 
     def get_season_content(self, season):
-        print('finding season...')
+        print(f"searching for {season}")
         res = r.get(f"https://manhua.dmzj.com/{season}/")
         episods = re.findall(re.compile(r'<a title=".*" href="(.*html)"'), res.text)
         for i in episods:
-            print(i)
             toappend = {"path": i}
             self.get_episode_links(toappend)
             self.contents.append(toappend)
@@ -30,7 +36,7 @@ class Dmzj:
         url = f"https://manhua.dmzj.com/{item['path']}#@page=1"
         res = r.get(url)
 
-        # 信息在JS里，需要用JS编译
+        # 信息被JS加密，需要用内置的JS编译
         soup = bs4.BeautifulSoup(res.text, features="lxml")
         head_script = soup.head.script.string
         js = EvalJs()
@@ -45,6 +51,7 @@ class Dmzj:
         for e in self.contents:
             download(e['sname'], e['chapter'], e['links'])
 
+
 if __name__ == "__main__":
-    d = Dmzj('lydxcbdzm')
-    d.download()
+    comic = DmzjDesktop('https://manhua.dmzj.com/lydxcbdzm/')
+    comic.download()
