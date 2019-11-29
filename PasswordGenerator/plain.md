@@ -1,5 +1,7 @@
 # Password type
 _XKCD_
+XKCD(with chinese words)
+_CommonStrongPwd_
 Apple
 faker
 Chrome
@@ -13,6 +15,13 @@ Chrome
 	* 符号
 - 符号限制
 
+## Strong password
+ - at least 15 chars
+ - upper case
+ - lower case
+ - numbers
+ - symbols
+    - sym = ['`', '!', '"', '?', '$', '?', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', '{', '[', '}', ']', ':', ';', '@', "'", '~', '#', '|', '\\', '<', ',', '>', '.', '?', '/']
 
 # UI
 ## SegmentedControl
